@@ -128,7 +128,7 @@ while a <= buffer_length:
     stream.write(output_string)
 
     # Get next frame (sample)
-    input_string = wf.readframes(1)
+    # input_string = wf.readframes(1)
 
 # print len(buffer)
 

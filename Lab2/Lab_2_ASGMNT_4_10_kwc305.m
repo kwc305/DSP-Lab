@@ -22,7 +22,7 @@ r2 = 0.01^(1/(Ta2*Fs))
 peak = log((1-r1)/(1-r2))/log(r2/r1)/8000
 a11 = [1 -2*r1*cos(om1) r1^2]  % recursive part
 a22 = [1 -2*r2*cos(om1) r2^2]
-% a = [1 1.89995 0.9]
+ a = [1 1.89995 0.9]
 b = 1;              % non-recursive part
 % change b, just change b0, twice the impulse response?
 

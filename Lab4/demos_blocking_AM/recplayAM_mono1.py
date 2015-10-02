@@ -16,7 +16,7 @@ import math
 
 # f0 = 0      # Normal audio
 f0 = 400    # 'Duck' audio
-f1 = 900
+f1 = 1
 BLOCKSIZE = 64  # Number of frames per block
 
 WIDTH = 2       # Number of bytes per sample
@@ -90,7 +90,7 @@ for i in range(0, num_blocks):
         # Amplitude modulation:
         
         output_block1[n] = input_tuple1[n] * math.cos(2*math.pi*n*f0/RATE + theta)
-        output_block2[n] = input_tuple2[n] * math.sin(2*math.pi*n*f1/RATE + theta)
+        output_block2[n] = input_tuple2[n] * math.sin(2*math.pi*n*f1/RATE + theta1)
     # Set angle for next block
     theta = theta + theta_del
     theta1 = theta1 + theta_del1

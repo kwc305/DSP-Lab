@@ -42,7 +42,8 @@ buffer = [0.0 for i in range(buffer_MAX)]   # Initialize to zero
 # Buffer (delay line) indices
 kr = 0  # read index
 kw = int(0.5 * buffer_MAX)  # write index (initialize to middle of buffer)
-kw = buffer_MAX/2
+# kw = buffer_MAX/2
+kw = 0
 
 # print('The delay of {0:.3f} seconds is {1:d} samples.'.format(delay_sec, delay_samples))
 print 'The buffer is {0:d} samples long.'.format(buffer_MAX)
@@ -69,17 +70,22 @@ for n in range(0, LEN):
     input_value = struct.unpack('h', input_string)[0]
 
     # Get previous and next buffer values (since kr is fractional)
-    kr_prev = int(math.floor(kr))               
+    kr_prev = int(math.floor(kr))  
+    # print kr_prev,kr             
     kr_next = kr_prev + 1
     frac = kr - kr_prev    # 0 <= frac < 1
     if kr_next >= buffer_MAX:
         kr_next = kr_next - buffer_MAX
 
+
+    # print kw, kr, kr_prev ,kr_next
     # Compute output value using interpolation
     output_value = (1-frac) * buffer[kr_prev] + frac * buffer[kr_next]
-
+    print output_value, "=", (1-frac),"*",buffer[kr_prev],"+",frac,"*",buffer[kr_next]
+    
     # Update buffer (pure delay)
     buffer[kw] = input_value
+    print buffer[kw]
 
     # Increment read index
     kr = kr + 1 + W * math.sin( 2 * math.pi * f0 * n / RATE )
@@ -95,7 +101,7 @@ for n in range(0, LEN):
     if kw == buffer_MAX:
         # End of buffer. Circle back to front.
         kw = 0
-    output_value = output_value + input_value
+
     # Clip and convert output value to binary string
     output_string = struct.pack('h', clip16(output_value))
 

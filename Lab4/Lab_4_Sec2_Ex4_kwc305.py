@@ -33,8 +33,6 @@ print('The file has %d bytes per sample.'   % WIDTH)
 # Vibrato parameters
 f0 = 2
 W = 0.5
-f1 = 0
-W1 = 0
 # W = 0 # for no effct
 
 # Create a buffer (delay line) for past values
@@ -44,20 +42,10 @@ buffer = [0.0 for i in range(buffer_MAX)]   # Initialize to zero
 # Buffer (delay line) indices
 kr = 0  # read index
 kw = int(0.5 * buffer_MAX)  # write index (initialize to middle of buffer)
-# kw = buffer_MAX/2
-kw = 0
-
-kr1 = 0  # read index
-kw1 = int(0.5 * buffer_MAX)  # write index (initialize to middle of buffer)
-# kw = buffer_MAX/2
-kw1 = 0
+kw = buffer_MAX/2
 
 # print('The delay of {0:.3f} seconds is {1:d} samples.'.format(delay_sec, delay_samples))
 print 'The buffer is {0:d} samples long.'.format(buffer_MAX)
-
-output_block = [0.0 for n in range(0, CHANNELS*BLOCKSIZE)]
-num_blocks = int(RATE / BLOCKSIZE * RECORD_SECONDS)
-
 
 # Open an output audio stream
 p = pyaudio.PyAudio()
@@ -69,40 +57,29 @@ stream = p.open(format      = pyaudio.paInt16,
 
 output_all = ''            # output signal in all (string)
 
-theta0 = 0.0
-theta1 = 0.0
-
-theta_del0 = (float(BLOCKSIZE*f0)/RATE - math.floor(BLOCKSIZE*f0/RATE)) * 2.0 * math.pi
-theta_del1 = (float(BLOCKSIZE*f1)/RATE - math.floor(BLOCKSIZE*f1/RATE)) * 2.0 * math.pi
-
 print ('* Playing...')
 
 # Loop through wave file 
-for n in range(0, num_blocks):
+for n in range(0, LEN):
 
     # Get sample from wave file
-    input_string = stream.read(BLOCKSIZE)
+    input_string = wf.readframes(1)
 
     # Convert string to number
-    input_value = struct.unpack('hh' * BLOCKSIZE, input_string)
+    input_value = struct.unpack('h', input_string)[0]
 
     # Get previous and next buffer values (since kr is fractional)
-    kr_prev = int(math.floor(kr))  
-    # print kr_prev,kr             
+    kr_prev = int(math.floor(kr))               
     kr_next = kr_prev + 1
     frac = kr - kr_prev    # 0 <= frac < 1
     if kr_next >= buffer_MAX:
         kr_next = kr_next - buffer_MAX
 
-
-    # print kw, kr, kr_prev ,kr_next
     # Compute output value using interpolation
     output_value = (1-frac) * buffer[kr_prev] + frac * buffer[kr_next]
-    print output_value, "=", (1-frac),"*",buffer[kr_prev],"+",frac,"*",buffer[kr_next]
-    
+
     # Update buffer (pure delay)
     buffer[kw] = input_value
-    print buffer[kw]
 
     # Increment read index
     kr = kr + 1 + W * math.sin( 2 * math.pi * f0 * n / RATE )
@@ -118,7 +95,7 @@ for n in range(0, num_blocks):
     if kw == buffer_MAX:
         # End of buffer. Circle back to front.
         kw = 0
-
+    output_value = output_value + input_value
     # Clip and convert output value to binary string
     output_string = struct.pack('h', clip16(output_value))
 

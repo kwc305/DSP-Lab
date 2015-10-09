@@ -4,7 +4,7 @@ import struct
 import math
 from myfunctions import clip16
 
-wavfile = "author.wav"
+wavfile = "04 04. Grandma (Wai Po).mp3"
 print("Play the wave file %s." % wavfile)
 
 # Open the wave file

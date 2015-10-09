@@ -19,7 +19,7 @@ gain = 0.5
 
 # wavfile = "cat01.wav"
 # wavfile = 'sin01_mono.wav'
-wavfile = 'sin01_stereo.wav'
+wavfile = '04 04. Grandma (Wai Po).mp3'
 
 print("Play the wave file %s." % wavfile)
 

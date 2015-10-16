@@ -8,8 +8,8 @@ Original: pyrecplay_modulation.py by Gerald Schuller, Octtober 2013
 Modified to read a wave file - Ivan Selesnick, September 2015
 """
 
-# f0 = 0      # Normal audio
-f0 = 400    # 'Duck' audio
+f0 = 0      # Normal audio
+# f0 = 400    # 'Duck' audio
 
 import pyaudio
 import struct

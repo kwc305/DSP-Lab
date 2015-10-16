@@ -16,7 +16,7 @@ import wave
 import math
 
 # f0 = 0      # Normal audio
-f0 = 400    # 'Duck' audio
+f0 = 500    # 'Duck' audio
 
 BLOCKSIZE = 64      # Number of frames per block
 

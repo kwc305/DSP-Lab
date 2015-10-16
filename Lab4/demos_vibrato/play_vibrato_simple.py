@@ -28,8 +28,8 @@ print('The file has %d frames.'             % LEN)
 print('The file has %d bytes per sample.'   % WIDTH)
 
 # Vibrato parameters
-f0 = 2
-W = 0.2
+f0 = 50
+W = 0.9
 # W = 0 # for no effct
 
 # Create a buffer (delay line) for past values
@@ -82,7 +82,7 @@ for n in range(0, LEN):
     if kw == buffer_MAX:
         # End of buffer. Circle back to front.
         kw = 0
-
+    # print kr-kw
     # Clip and convert output value to binary string
     output_string = struct.pack('h', clip16(output_value))
 

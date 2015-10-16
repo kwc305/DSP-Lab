@@ -29,7 +29,7 @@ print("There are %d bytes per sample."         % width)
 # Set parameters of delay system
 Gfb = 0.5           # feed-back gain
 Gdp = 0.8           # direct-path gain
-Gff = 0.2           # feed-forward gain
+Gff = 2.2           # feed-forward gain
 # Gff = 0.0         # feed-forward gain (set to zero for no effect)
 
 buffer_MAX =  2**10 # set the length of buffer

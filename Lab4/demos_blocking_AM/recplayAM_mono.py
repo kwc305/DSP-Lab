@@ -73,7 +73,8 @@ for i in range(0, num_blocks):
 
     # Set angle for next block
     theta = theta + theta_del
-    print output_block
+    # print output_block
+    print theta
     # Convert values to binary string
     output_string = struct.pack('h' * BLOCKSIZE, *output_block)
 

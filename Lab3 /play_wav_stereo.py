@@ -1,4 +1,4 @@
-# play_wav_mono_ver2.py
+# play_wav_stereo.py
 
 import pyaudio
 import wave
@@ -17,8 +17,9 @@ def clip16( x ):
 
 gain = 0.5
 
-wavfile = 'sin01_mono.wav'
-# wavfile = 'sin01_stereo.wav'
+# wavfile = "cat01.wav"
+# wavfile = 'sin01_mono.wav'
+wavfile = 'sin01_stereo.wav'
 
 print("Play the wave file %s." % wavfile)
 
@@ -43,24 +44,22 @@ stream = p.open(format      = pyaudio.paInt16,
                 input       = False,
                 output      = True )
 
-input_string = wf.readframes(1)          # Get first frame
+input_string = wf.readframes(1)          # Read first frame
 
 while input_string != '':
 
-    # Convert string to number
-    input_value = struct.unpack('h', input_string)[0]
-    # ... equivalently:
-    # input_tuple = struct.unpack('h', input_string)  # One-element tuple
-    # input_value = input_tuple[0]                    # Number
-   
-    # Compute output value
-    output_value = clip16(gain * input_value)    # Number
+    # Convert string to numbers
+    input_tuple = struct.unpack('hh', input_string)  # produces a two-element tuple
+
+    # Compute output values
+    output_value0 = clip16(gain * input_tuple[0])
+    output_value1 = clip16(gain * input_tuple[1])
 
     # Convert output value to binary string
-    output_string = struct.pack('h', output_value)  
+    output_string = struct.pack('hh', output_value0, output_value1)
 
     # Write output value to audio stream
-    stream.write(output_string)                     
+    stream.write(output_string)
 
     # Get next frame
     input_string = wf.readframes(1)

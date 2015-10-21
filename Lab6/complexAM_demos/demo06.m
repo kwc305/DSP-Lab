@@ -17,7 +17,7 @@ soundsc(x, fs)
 %% Design filter
 
 K = 7;
-[b_lpf, a_lpf] = ellip(K, 0.2, 50, 0.48);
+[b_lpf, a_lpf] = ellip(K, 0.2, 50, 0.48)
 
 % complex modulate filter coefficients to get complex filter
 I = sqrt(-1);

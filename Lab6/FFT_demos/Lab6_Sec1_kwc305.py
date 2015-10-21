@@ -10,7 +10,7 @@ import pyaudio
 import struct
 import numpy as np
 from matplotlib import pyplot as plt
-import math
+from matplotlib.backends.backend_pdf import PdfPages
 
 plt.ion()           # Turn on interactive mode so plot gets updated
 
@@ -28,23 +28,24 @@ print 'Running for ', DURATION, 'seconds...'
 
 # Initialize plot window:
 plt.figure(1)
-plt.ylim(0, 20000)
+plt.ylim(0, 100*np.log10(RATE))
 plt.ylabel('dB')
-# plt.yscale('log')
 
-# plt.xlim(0, BLOCKSIZE/2.0)         # set x-axis limits
+# plt.xlim(0, 1000*np.log10(RATE))         # set x-axis limits
 # plt.xlabel('Frequency (k)')
 # f = np.linspace(0, BLOCKSIZE-1, BLOCKSIZE)
 
 # # Time axis in units of milliseconds:
-plt.xlim(0.0, 1000)         # set x-axis limits
-plt.xlabel('Frequency (Hz)')
-f = [n*float(RATE/BLOCKSIZE) for n in range(BLOCKSIZE)]
+plt.xlim(1, np.log10(RATE/2))
+# plt.xscale('log')
+# plt.xticks([1,200,500])
+plt.xlabel('Log (Hz)')
+
+f = [np.log10(n*float(RATE/BLOCKSIZE)) for n in range(BLOCKSIZE)]
 
 line, = plt.plot([], [], color = 'blue')  # Create empty line
-plt.xscale("log")
 line.set_xdata(f)                         # x-data of plot (frequency)
-
+# plt.xscale('log')
 # Open audio device:
 p = pyaudio.PyAudio()
 PA_FORMAT = p.get_format_from_width(WIDTH)
@@ -54,16 +55,23 @@ stream = p.open(format = PA_FORMAT,
                 input = True,
                 output = False)
 
+
+
+
 for i in range(0, NumBlocks):
     input_string = stream.read(BLOCKSIZE)                     # Read audio input stream
     input_tuple = struct.unpack('h'*BLOCKSIZE, input_string)  # Convert
+    
     X = np.fft.fft(input_tuple)
-    X[i] = np.log10(X[i])*20 
-    line.set_ydata(abs(X))           # Update y-data of plot
-
-    # plt.yscale('log')
+    X = np.log10(X)*20
+    print X[i]
+    line.set_ydata(np.abs(X))                               # Update y-data of plot
+    if i == NumBlocks/2:
+        pp  = PdfPages('spectrum.pdf')
+        plt.savefig(pp, format='pdf')
+        pp.close()
     plt.draw()
-# plt.close()
+plt.close()
 
 stream.stop_stream()
 stream.close()

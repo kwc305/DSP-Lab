@@ -15,11 +15,11 @@ def clip16( x ):
         x = x        
     return int(x)
 
-gain = 0.5
-
+gain = 0.9
+gain1 = 0.0
 # wavfile = "cat01.wav"
 # wavfile = 'sin01_mono.wav'
-wavfile = '04 04. Grandma (Wai Po).mp3'
+wavfile = 'sin01_stereo.wav'
 
 print("Play the wave file %s." % wavfile)
 
@@ -39,7 +39,7 @@ print("There are %d bytes per sample."         % width)
 # ----------------------------------
 
 # Set parameters of delay system
-Gfb = 1.5       # feed-back gain
+Gfb = 0.0       # feed-back gain
 g0 = 0.9        # direct-path gain
 g11 =  1.0       # a feed-forward gain
                # a feed-forward gain
@@ -80,9 +80,9 @@ input_string = wf.readframes(1)          # Read first frame
 
 
 k = 0
-m1 = delay1
+m1 = 2
 m11 = 0
-m2 = delay2
+m2 = 2
 m22 =0
 
 print ("****  playing  ****")
@@ -91,12 +91,15 @@ while input_string != '':
     # Convert string to numbers
     input_tuple = struct.unpack('hh', input_string)  # produces a two-element tuple
 
-    # Compute output values
-    output_value0 = clip16(gain * input_tuple[0] + g11 * buffer2[m2-1] )
-    output_value1 = clip16(gain * input_tuple[1] + g21 * buffer1[m1-1] )
 
-    buffer1[k] = input_tuple[1] + Gfb * buffer2[k]
-    buffer2[k] = input_tuple[0] + Gfb * buffer1[k]
+    buffer1[k] = gain * input_tuple[0] 
+    buffer2[k] = gain1 * input_tuple[1] 
+
+    # Compute output values
+    output_value0 = clip16(gain * input_tuple[0] + g11 * buffer2[m2-1])
+    output_value1 = clip16(gain1 * input_tuple[1] + g21 * buffer1[m1-1] )
+
+    
 
     k = k + 1
     m1 = m1 + 1

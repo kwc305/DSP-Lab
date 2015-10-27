@@ -34,7 +34,7 @@ kw = int(0.5 * buffer_MAX)      # write index (initialize to middle of buffer)
 def my_callback(input_string, block_size, time_info, status):
     global n, kr, kw
     # print kr
-    print "******"
+    # print "******"
     output_string = ""
     in_sample = struct.unpack('h' * BLOCKSIZE, input_string)
     # print len(in_sample)
@@ -80,7 +80,7 @@ stream = p.open(format = p.get_format_from_width(WIDTH),
 
 
 
-print '* Recording 5 seconds ...'
+# print '* Recording 5 seconds ...'
 
 time.sleep(15.0)
 

@@ -26,7 +26,7 @@ print("The file has %d frames."                % signal_length)
 print("There are %d bytes per sample."         % width)
 
 # Set parameters of delay system
-Gfb = 0.5       # feed-back gain
+Gfb = 1.5       # feed-back gain
 g0 = 0.7        # direct-path gain
 g1 = 0.4        # a feed-forward gain
 g2 = 0.3        # a feed-forward gain

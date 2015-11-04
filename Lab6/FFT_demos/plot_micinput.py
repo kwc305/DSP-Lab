@@ -9,7 +9,10 @@ Modified: Ivan Selesnick, September 2015
 
 import pyaudio
 import struct
+import matplotlib
+matplotlib.use('TkAgg')
 from matplotlib import pyplot as plt
+#plt.use('TkAgg')
 
 plt.ion()           # Turn on interactive mode so plot gets updated
 
@@ -21,9 +24,9 @@ DURATION = 10  		# Duration in seconds
 
 NumBlocks = int( DURATION * RATE / BLOCKSIZE )
 
-print 'BLOCKSIZE =', BLOCKSIZE
-print 'NumBlocks =', NumBlocks
-print 'Running for ', DURATION, 'seconds...'
+print ('BLOCKSIZE ='), BLOCKSIZE
+print ('NumBlocks ='), NumBlocks
+print ('Running for '), DURATION, 'seconds...'
 
 # Initialize plot window:
 plt.figure(1)
@@ -61,4 +64,4 @@ stream.stop_stream()
 stream.close()
 p.terminate()
 
-print '* Done'
+print ('* Done')

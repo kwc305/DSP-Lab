@@ -27,9 +27,9 @@ DURATION = 10  		# Duration in seconds
 
 
 
-print 'BLOCKSIZE =', BLOCKSIZE
+#print ('BLOCKSIZE =', BLOCKSIZE
 # print 'NumBlocks =', NumBlocks
-print 'Running for ', DURATION, 'seconds...'
+#print ('Running for '), DURATION, ('seconds...'
 
 wf = wave.open( filename, 'rb')
 
@@ -75,12 +75,12 @@ stream = p.open(format = PA_FORMAT,
 
 
 
-for i in range(0, LEN/BLOCKSIZE):
+for i in range(0, int(LEN/BLOCKSIZE)):
 	
-	print i
+	# print i
 	# input_string = stream.read(BLOCKSIZE)                     # Read audio input stream
 	input_string = wf.readframes(BLOCKSIZE)
-	print len(input_string)
+	# print len(input_string)
 	input_tuple = struct.unpack('h'*BLOCKSIZE, input_string)  # Convert
 	input_tuple= input_tuple * np.cos(2*np.pi*RATE)
 	line.set_ydata(input_tuple)                               # Update y-data of plot
@@ -92,4 +92,4 @@ stream.stop_stream()
 stream.close()
 p.terminate()
 
-print '* Done'
+# print '* Done'

@@ -4,7 +4,7 @@
 %% Define IIR filter 
 
 K = 3;
-[b, a] = cheby2(K, 30, 0.6);
+[b, a] = cheby2(K, 30, 0.6,); %lowpass filter
 
 Nfft = 64;
 H = fft(b, Nfft) ./ fft(a, Nfft);
@@ -42,7 +42,8 @@ zplane(b2, a2)
 title('H2(z)   [Z Transform]')
 
 subplot(2, 1, 2)
-plot(om - pi, fftshift(abs(H2)))
+%plot(om - pi, fftshift(abs(H2)))
+plot(om - pi/2, fftshift(abs(H2)))
 title('|H2(\omega)|   [Frequency response]')
 xlabel('\omega')
 xlim([-pi pi])

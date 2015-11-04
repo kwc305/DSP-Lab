@@ -16,7 +16,7 @@ def clip16( x ):
     return int(x)
 
 gain = 0.9
-gain1 = 0.0
+gain1 = 0.8
 # wavfile = "cat01.wav"
 # wavfile = 'sin01_mono.wav'
 wavfile = 'sin01_stereo.wav'
@@ -39,7 +39,7 @@ print("There are %d bytes per sample."         % width)
 # ----------------------------------
 
 # Set parameters of delay system
-Gfb = 0.0       # feed-back gain
+Gfb = 0.8       # feed-back gain
 g0 = 0.9        # direct-path gain
 g11 =  1.0       # a feed-forward gain
                # a feed-forward gain

@@ -8,7 +8,7 @@ K = 4;
 [b, a] = cheby2(K, 40, 0.5);
 
 Nfft = 64;
-H = fft(b, Nfft) ./ fft(a, Nfft);
+H = fft(b, Nfft) ./ fft(a, Nfft)
 f = (0:Nfft-1)/Nfft;
 om = 2*pi*f;
 

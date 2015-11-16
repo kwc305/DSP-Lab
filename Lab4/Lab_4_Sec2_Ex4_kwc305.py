@@ -12,7 +12,7 @@ import struct
 import math
 from myfunctions import clip16
 
-wavfile = 'author.wav'
+wavfile = 'testsound.wav'
 # wavfile = 'decay_cosine_mono.wav'
 print 'Play the wave file: {0:s}.'.format(wavfile)
 
@@ -64,9 +64,8 @@ for n in range(0, LEN):
 
     # Get sample from wave file
     input_string = wf.readframes(1)
-
     # Convert string to number
-    input_value = struct.unpack('h', input_string)[0]
+    input_value = struct.unpack('h', input_string)
 
     # Get previous and next buffer values (since kr is fractional)
     kr_prev = int(math.floor(kr))               

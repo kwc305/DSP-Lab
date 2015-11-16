@@ -31,7 +31,7 @@ print('The file has %d frames.'             % LEN)
 print('The file has %d bytes per sample.'   % WIDTH)
 
 # Vibrato parameters
-f0 = 2
+f0 = 20
 W = 0.5
 # W = 0 # for no effct
 
@@ -95,7 +95,7 @@ for n in range(0, LEN):
     if kw == buffer_MAX:
         # End of buffer. Circle back to front.
         kw = 0
-    output_value = output_value + input_value
+    output_value = output_value - input_value
     # Clip and convert output value to binary string
     output_string = struct.pack('h', clip16(output_value))
 
@@ -110,13 +110,13 @@ stream.stop_stream()
 stream.close()
 p.terminate()
 
-output_wavefile = wavfile[:-4] + '_vibrato.wav'
-print 'Writing to wave file', output_wavefile
-wf = wave.open(output_wavefile, 'w')      # wave file
-wf.setnchannels(1)      # one channel (mono)
-wf.setsampwidth(2)      # two bytes per sample
-wf.setframerate(RATE)   # samples per second
-wf.writeframes(output_all)
-wf.close()
+# output_wavefile = wavfile[:-4] + '_vibrato.wav'
+# print 'Writing to wave file', output_wavefile
+# wf = wave.open(output_wavefile, 'w')      # wave file
+# wf.setnchannels(1)      # one channel (mono)
+# wf.setsampwidth(2)      # two bytes per sample
+# wf.setframerate(RATE)   # samples per second
+# wf.writeframes(output_all)
+# wf.close()
 print('* Done')
 

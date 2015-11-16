@@ -4,7 +4,7 @@
 %% Define IIR filter 
 
 K = 3;
-[b, a] = cheby2(K, 30, 0.6,); %lowpass filter
+[b, a] = cheby2(K, 30, 0.6); %lowpass filter
 
 Nfft = 64;
 H = fft(b, Nfft) ./ fft(a, Nfft);

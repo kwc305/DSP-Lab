@@ -4,7 +4,6 @@ Using Pyaudio, record sound from the audio device and plot,
 for 8 seconds, and display it live in a Window.
 Usage example: python pyrecplotanimation.py
 Gerald Schuller, October 2014 
-Modified: Ying-Ta Lin, October 2015
 """
 
 import pyaudio
@@ -35,7 +34,7 @@ def shift_array(l, n):
 
 plt.ion()           # Turn on interactive mode so plot gets updated
 BLOCKSIZE = 1024
-f0 = 400              # 'dock audio'
+f0 = 0              # 'dock audio'
 
 # Number of blocks in wave file
 NumBlocks = int(math.floor(LEN/BLOCKSIZE))
@@ -82,6 +81,7 @@ stream = p.open(format = PA_FORMAT,
                 output = True)
 
 for i in range(0, BLOCKSIZE):
+    print i
     input_string = stream.read(BLOCKSIZE)                     # Read audio input stream
     input_tuple = struct.unpack('h'*BLOCKSIZE, input_string)    # Convert
 

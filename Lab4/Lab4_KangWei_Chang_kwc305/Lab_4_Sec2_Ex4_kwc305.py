@@ -12,7 +12,7 @@ import struct
 import math
 from myfunctions import clip16
 
-wavfile = 'author.wav'
+wavfile = 'testsound.wav'
 # wavfile = 'decay_cosine_mono.wav'
 print 'Play the wave file: {0:s}.'.format(wavfile)
 
@@ -49,8 +49,8 @@ print 'The buffer is {0:d} samples long.'.format(buffer_MAX)
 
 # Open an output audio stream
 p = pyaudio.PyAudio()
-stream = p.open(format      = pyaudio.paInt16,
-                channels    = 1,
+stream = p.open(format      = pyaudio.paInt32,
+                channels    = 2,
                 rate        = RATE,
                 input       = False,
                 output      = True )
@@ -58,15 +58,15 @@ stream = p.open(format      = pyaudio.paInt16,
 output_all = ''            # output signal in all (string)
 
 print ('* Playing...')
-
+BLOCK=2
 # Loop through wave file 
 for n in range(0, LEN):
-
+    # print n 
     # Get sample from wave file
     input_string = wf.readframes(1)
-
+    # print len(input_string)
     # Convert string to number
-    input_value = struct.unpack('h', input_string)[0]
+    input_value = struct.unpack('h'*WIDTH, input_string)
 
     # Get previous and next buffer values (since kr is fractional)
     kr_prev = int(math.floor(kr))               

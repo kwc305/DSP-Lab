@@ -149,7 +149,7 @@ plot(om, abs( Id + H ) );
 a = [5 -4 3]
 b = flip(a)
 [H, om] = freqz(b, a);
-plot(om, abs( Id + H ) );
+plot(om, ( Id+H ) );
 % Now the total system is a notch filter with a null.
 % Where is the null?
 % It is at the frequency where the all-pass filter is -1.

@@ -10,9 +10,9 @@ def worker(input_name):
 
 def my_service():
     name = multiprocessing.current_process().name
-    print name, 'Starting'
+    print name, 'myserviceStarting'
     time.sleep(3)
-    print name, 'Exiting'
+    print name, 'myserviceExiting'
 
 if __name__ == '__main__':
     service = multiprocessing.Process(name='my_service',

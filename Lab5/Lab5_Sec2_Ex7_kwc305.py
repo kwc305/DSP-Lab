@@ -65,6 +65,7 @@ def my_callback(input_string, block_size, time_info, status):
         # print out_sample
         sample[i] = clip16( GAIN * (out_sample) )
         output_data[i] = sample[i]
+        print i
         n+=1
     output_string+=( struct.pack('h'*len(output_data), *output_data))
     return (output_string, pyaudio.paContinue)

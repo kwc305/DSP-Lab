@@ -14,12 +14,12 @@ import sys
 from myfunctions import clip16
 
 # Number of frames per block
-BLOCKSIZE = 128
+BLOCKSIZE = 2
 
 WIDTH = 2       # Number of bytes per sample
 CHANNELS = 2    # mono
 RATE = 32000    # Sampling rate (samples/second)
-RECORD_SECONDS = 8
+RECORD_SECONDS = 80
 
 print('The file has %d channel(s).'         % CHANNELS)
 print('The file has %d frames/second.'      % RATE)
@@ -95,66 +95,68 @@ for n in range(0, num_blocks):
     input_value = struct.unpack('hh' * BLOCKSIZE, input_string)
 
     # Go through block
-    for n in range(0, BLOCKSIZE):
+    # for n in range(0, BLOCKSIZE):
 
-        # Get previous and next buffer values (since kr is fractional)
-        kr_prev0 = int(math.floor(kr0))               
-        kr_next0 = (kr_prev0 + 1) % BLOCKSIZE
-        frac0 = kr0 - kr_prev0    # 0 <= frac < 1
+    #     # Get previous and next buffer values (since kr is fractional)
+    #     kr_prev0 = int(math.floor(kr0))               
+    #     kr_next0 = (kr_prev0 + 1) % BLOCKSIZE
+    #     frac0 = kr0 - kr_prev0    # 0 <= frac < 1
 
-        # Get previous and next buffer values (since kr is fractional)
-        kr_prev1 = int(math.floor(kr1))               
-        kr_next1= (kr_prev1 + 1) % BLOCKSIZE
-        frac1 = kr1 - kr_prev1    # 0 <= frac < 1
+    #     # Get previous and next buffer values (since kr is fractional)
+    #     kr_prev1 = int(math.floor(kr1))               
+    #     kr_next1= (kr_prev1 + 1) % BLOCKSIZE
+    #     frac1 = kr1 - kr_prev1    # 0 <= frac < 1
         
-        # Compute output value using interpolation
-        prev0 = (1-frac0) * buffer0[kr_prev0]
-        next0 = frac0 * buffer0[kr_next0]
+    #     # Compute output value using interpolation
+    #     prev0 = (1-frac0) * buffer0[kr_prev0]
+    #     next0 = frac0 * buffer0[kr_next0]
 
-        # Compute output value using interpolation
-        prev1 = (1-frac1) * buffer1[kr_prev1]
-        next1 = frac1 * buffer1[kr_next1]
+    #     # Compute output value using interpolation
+    #     prev1 = (1-frac1) * buffer1[kr_prev1]
+    #     next1 = frac1 * buffer1[kr_next1]
 
-        output_block[2*n] = prev0 + next0
-        output_block[2*n+1] = prev1 + next1
+    #     output_block[2*n] = prev0 + next0
+    #     output_block[2*n+1] = prev1 + next1
 
-        # Update buffer (pure delay)
-        buffer0[kw0] = input_value[2*n]
-        buffer1[kw1] = input_value[2*n+1]
+    #     # Update buffer (pure delay)
+    #     buffer0[kw0] = input_value[2*n]
+    #     buffer1[kw1] = input_value[2*n+1]
 
-        # Increment read index
-        kr0 = kr0 + 1 + W0 * math.sin( 2 * math.pi * f0 * n / RATE + theta0)
-        kr1 = kr1 + 1 + W1 * math.sin( 2 * math.pi * f1 * n / RATE + theta1)
-            # Note: kr is fractional (not integer!)
+    #     # Increment read index
+    #     kr0 = kr0 
+    #     # + 1 + W0 * math.sin( 2 * math.pi * f0 * n / RATE + theta0)
+    #     kr1 = kr1 
+    #     # + 1 + W1 * math.sin( 2 * math.pi * f1 * n / RATE + theta1)
+    #         # Note: kr is fractional (not integer!)
 
-        # Ensure that 0 <= kr < BLOCKSIZE
-        if kr0 >= BLOCKSIZE:
-            # End of buffer. Circle back to front.
-            kr0 = 0
+    #     # Ensure that 0 <= kr < BLOCKSIZE
+    #     if kr0 >= BLOCKSIZE:
+    #         # End of buffer. Circle back to front.
+    #         kr0 = 0
 
-        # Increment write index    
-        kw0 = kw0 + 1
-        if kw0 == BLOCKSIZE:
-            # End of buffer. Circle back to front.
-            kw0 = 0
+    #     # Increment write index    
+    #     kw0 = kw0 + 1
+    #     if kw0 == BLOCKSIZE:
+    #         # End of buffer. Circle back to front.
+    #         kw0 = 0
         
-        # Ensure that 0 <= kr < BLOCKSIZE
-        if kr1 >= BLOCKSIZE:
-            # End of buffer. Circle back to front.
-            kr1 = 0
+    #     # Ensure that 0 <= kr < BLOCKSIZE
+    #     if kr1 >= BLOCKSIZE:
+    #         # End of buffer. Circle back to front.
+    #         kr1 = 0
 
-        # Increment write index    
-        kw1 = kw1 + 1
-        if kw1 == BLOCKSIZE:
-            # End of buffer. Circle back to front.
-            kw1 = 0
+    #     # Increment write index    
+    #     kw1 = kw1 + 1
+    #     if kw1 == BLOCKSIZE:
+    #         # End of buffer. Circle back to front.
+    #         kw1 = 0
 
-    # Set angle for next block
-    theta0 = theta0 + theta_del0
-    theta1 = theta1 + theta_del1
+    # # Set angle for next block
+    # theta0 = theta0 + theta_del0
+    # theta1 = theta1 + theta_del1
 
     # Convert values to binary string
-    output_string = struct.pack('hh' * BLOCKSIZE, *output_block)
+    output_string = struct.pack('hh' * BLOCKSIZE, *input_value)
 
     # Write output to audio stream
     stream.write(output_string)
